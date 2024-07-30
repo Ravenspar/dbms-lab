@@ -1,0 +1,190 @@
+CREATE TABLE Airline (
+AirlineID INT AUTO_INCREMENT PRIMARY KEY,
+Name VARCHAR(100) NOT NULL,
+Country VARCHAR(100)
+);
+-- Create Airport Table
+CREATE TABLE Airport (
+AirportID INT AUTO_INCREMENT PRIMARY KEY,
+Name VARCHAR(100) NOT NULL,
+City VARCHAR(100),
+Country VARCHAR(100)
+);
+-- Create Flight Table
+CREATE TABLE Flight (
+FlightID INT AUTO_INCREMENT PRIMARY KEY,
+AirlineID INT,
+DepartureAirportID INT,
+ArrivalAirportID INT,
+DepartureTime DATETIME,
+ArrivalTime DATETIME,
+FOREIGN KEY (AirlineID) REFERENCES Airline(AirlineID),
+FOREIGN KEY (DepartureAirportID) REFERENCES Airport(AirportID),
+FOREIGN KEY (ArrivalAirportID) REFERENCES Airport(AirportID)
+);
+-- Create Passenger Table
+CREATE TABLE Passenger (
+PassengerID INT AUTO_INCREMENT PRIMARY KEY,
+FirstName VARCHAR(100),
+LastName VARCHAR(100),
+PassportNumber VARCHAR(50) UNIQUE
+);
+
+-- Create Ticket Table
+CREATE TABLE Ticket (
+TicketID INT AUTO_INCREMENT PRIMARY KEY,
+FlightID INT,
+PassengerID INT,
+SeatNumber VARCHAR(10),
+BookingDate DATETIME,
+FOREIGN KEY (SeatNumber FlightID) REFERENCES Flight(FlightID),
+FOREIGN KEY (PassengerID) REFERENCES Passenger(PassengerID)
+);
+
+create table passenger_info
+(
+FirstName VARCHAR(100),
+BookingDate DATETIME
+);
+
+INSERT INTO Airline (Name, Country) VALUES
+('Delta Air Lines', 'United States'),
+('American Airlines', 'United States'),
+('Lufthansa', 'Germany'),
+('Air France', 'France'),
+('British Airways', 'United Kingdom'),
+('Emirates', 'United Arab Emirates'),
+('Qantas', 'Australia'),
+('Cathay Pacific', 'Hong Kong'),
+('Singapore Airlines', 'Singapore'),
+('Japan Airlines', 'Japan');
+
+INSERT INTO Airport (Name, City, Country) VALUES
+('Los Angeles International Airport', 'Los Angeles', 'United States'),
+('Heathrow Airport', 'London', 'United Kingdom'),
+('Haneda Airport', 'Tokyo', 'Japan'),
+('Charles de Gaulle Airport', 'Paris', 'France'),
+('Frankfurt Airport', 'Frankfurt', 'Germany'),
+('Dubai International Airport', 'Dubai', 'United Arab Emirates'),
+('Changi Airport', 'Singapore', 'Singapore'),
+('Sydney Kingsford Smith Airport', 'Sydney', 'Australia'),
+('Hong Kong International Airport', 'Hong Kong', 'Hong Kong'),
+('John F. Kennedy International Airport', 'New York', 'United States');
+
+INSERT INTO Flight (AirlineID, DepartureAirportID, ArrivalAirportID, DepartureTime,
+ArrivalTime) VALUES
+(1, 1, 2, '2024-07-01 08:00:00', '2024-07-01 16:00:00'),
+(2, 3, 4, '2024-07-02 09:00:00', '2024-07-02 17:00:00'),
+(3, 5, 6, '2024-07-03 10:00:00', '2024-07-03 18:00:00'),
+(4, 7, 8, '2024-07-04 11:00:00', '2024-07-04 19:00:00'),
+(5, 9, 10, '2024-07-05 12:00:00', '2024-07-05 20:00:00'),
+(6, 1, 3, '2024-07-06 13:00:00', '2024-07-06 21:00:00'),
+(7, 2, 4, '2024-07-07 14:00:00', '2024-07-07 22:00:00'),
+(8, 5, 7, '2024-07-08 15:00:00', '2024-07-08 23:00:00'),
+(9, 6, 8, '2024-07-09 16:00:00', '2024-07-09 00:00:00'),
+(10, 9, 1, '2024-07-10 17:00:00', '2024-07-10 01:00:00');
+
+INSERT INTO Passenger (FirstName, LastName, PassportNumber) VALUES
+('John', 'Doe', 'A1234567'),
+('Jane', 'Smith', 'B2345678'),
+('Alice', 'Johnson', 'C3456789'),
+('Robert', 'Brown', 'D4567890'),
+('Emily', 'Davis', 'E5678901'),
+('Michael', 'Wilson', 'F6789012'),
+('Sarah', 'Miller', 'G7890123'),
+('David', 'Taylor', 'H8901234'),
+('Laura', 'Anderson', 'I9012345'),
+('James', 'Thomas', 'J0123456');
+
+INSERT INTO Ticket (FlightID, PassengerID, SeatNumber, BookingDate) VALUES
+(1, 1, '12A', '2024-06-01 10:00:00'),
+(2, 2, '14B', '2024-06-02 11:00:00'),
+(3, 3, '16C', '2024-06-03 12:00:00'),
+(4, 4, '18D', '2024-06-04 13:00:00'),
+(5, 5, '20E', '2024-06-05 14:00:00'),
+(6, 6, '22F', '2024-06-06 15:00:00'),
+(7, 7, '24G', '2024-06-07 16:00:00'),
+(8, 8, '26H', '2024-06-08 17:00:00'),
+(9, 9, '28I', '2024-06-09 18:00:00'),
+(10, 10, '30J', '2024-06-10 19:00:00');
+
+INSERT INTO passenger_info (FirstName, BookingDate) VALUES
+('John Doe', '2024-07-01 12:00:00'),
+('Jane Smith', '2024-07-02 13:00:00'),
+('Alice Johnson', '2024-07-03 14:00:00'),
+('Bob Brown', '2024-07-04 15:00:00'),
+('John Doe', '2024-07-01 12:00:00'), -- Duplicate
+('Jane Smith', '2024-07-02 13:00:00'), -- Duplicate
+('Alice Johnson', '2024-07-03 14:00:00'), -- Duplicate
+('Bob Brown', '2024-07-04 15:00:00'), -- Duplicate
+('Charlie Davis', '2024-07-05 16:00:00'),
+('Eva Green', '2024-07-06 17:00:00');
+
+### QUERY 1- Retrieve All Flights Along with Airline Names, their Arrival and Departure times.
+SELECT
+Flight.FlightID,
+Airline.Name AS AirlineName,
+Flight.DepartureTime,
+Flight.ArrivalTime
+FROM
+Flight
+JOIN
+Airline ON Flight.AirlineID = Airline.AirlineID;
+
+###QUERY 2- Retrieve Passengers and Their Flight Details
+SELECT
+Passenger.FirstName,
+Passenger.LastName,
+Flight.FlightID,
+Flight.DepartureTime,
+Flight.ArrivalTime
+FROM
+Passenger
+JOIN
+Ticket ON Passenger.PassengerID = Ticket.PassengerID
+JOIN
+Flight ON Ticket.FlightID = Flight.FlightID;
+
+###QUERY 3- Write an SQL query to identify the duplicate records in the passenger_info table.
+WITH CTE AS (
+SELECT
+FirstName,
+BookingDate,
+ROW_NUMBER() OVER(PARTITION BY FirstName, BookingDate ORDER BY
+FirstName, BookingDate) AS row_num
+FROM
+passenger_info
+)
+SELECT
+FirstName,
+BookingDate,
+row_num
+FROM
+CTE
+WHERE
+row_num > 1;
+
+###QUERY 4- Write an SQL query to delete the duplicate records in the
+passenger_info table.
+SET SQL_SAFE_UPDATES = 0;
+WITH CTE AS (
+SELECT
+FirstName,
+BookingDate,
+ROW_NUMBER() OVER(PARTITION BY FirstName, BookingDate ORDER BY FirstName,
+BookingDate) AS row_num
+FROM
+passenger_info
+)
+DELETE FROM
+passenger_info
+WHERE
+EXISTS (
+SELECT 1
+FROM CTE
+WHERE
+passenger_info.FirstName = CTE.FirstName
+AND passenger_info.BookingDate = CTE.BookingDate
+AND CTE.row_num > 1
+);
+select * from passenger_info

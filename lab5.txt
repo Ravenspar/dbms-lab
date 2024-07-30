@@ -1,0 +1,56 @@
+use mydatabase
+
+###QUERY1: Command to create new collections, update the documents
+>> db.createCollection(‘csd’)
+
+###QUERY 2: Create a new collection named “empDetails” and insert 1 document for
+an employee first name, Last name, DOB, Email and PhoneNo
+
+db.createCollection("empDetails")
+db.empDetails.insertOne(
+{
+	First_name : "john doe"
+	Last_name: ""
+	DOB:""
+	email: ""
+	phone: ""
+})
+
+###QUERY 3: For the same collection “empDetails” add 2 to 3 documents capturing
+the different employees information for the same attributes.
+
+db.empDetails.insertMany(
+[
+	{
+			First_name : "john doe"
+			Last_name: ""
+			DOB:""
+			email: ""
+			phone: ""
+		},
+		{
+			First_name : ""
+			Last_name: ""
+			DOB:""
+			email: ""
+			phone: ""
+	}
+]
+
+###QUERY 4. Write a MongoDB command to display the contents of “empDetails” collection
+	
+db.empDetail.find();
+
+###objectID and display the collection to check if the phone no. is updated or not.
+
+db.empDetails.update({_id: ObjectID("2193083431")}, {$set : {phone: "8890980079"}});
+db.empDetails.find();
+
+
+Anaconda
+
+pip install mymongo
+from pymongo import MongoClient
+client.MongoClient("mongodb://localhost:27000")
+db.client["day_six"]
+collection.db["products"]

@@ -1,0 +1,149 @@
+Create table customers
+(
+customer_code varchar(45) primary key,
+custmer_name varchar(45),
+customer_type varchar(45)
+);
+
+create table date
+(
+date date primary key,
+year int,
+month_name varchar(45),
+date_yy_mmm varchar(45)
+);
+
+Create table markets
+(
+markets_code varchar(45) primary key,
+markets_name varchar(45),
+zone varchar(45)
+);
+
+create table products
+(
+product_code varchar(45) primary key,
+product_type varchar(45)
+);
+
+create table transactions
+(
+product_code varchar(45) references products.product_code,
+customer_code varchar(45) references customers.customer_code,
+market_code varchar(45) references markets.market_code,
+order_date date references date.date,
+sales_qty int,
+sales_amount double,
+currency varchar(45),
+profit_margin_percentage double,
+profit_margin double,
+cost_price double
+);
+
+insert into customers values('Cus100','Ram','regular');
+insert into customers values('Cus101','RAJ','OCCASIONAL');
+insert into customers values('Cus102','RAJIV','ECOMMERCE');
+insert into customers values('Cus103','Rajni','regular');
+insert into customers values('Cus104','John','OCCASIONAL');
+insert into customers values('Cus105','Ravi','ECOMMERCE');
+insert into customers values('Cus106','Joe','regular');
+insert into customers values('Cus107','Lakhan','OCCASIONAL');
+insert into customers values('Cus108','Krishna','ECOMMERCE');
+insert into customers values('Cus109','sudhama','ECOMMERCE');
+
+Alter table date Drop column date_yy_mmm
+desc date
+
+insert into date values('2016-06-30',2016,'june');
+insert into date values('2016-07-28',2016,'july');
+insert into date values('2016-06-25',2016,'june');
+insert into date values('2016-07-20',2016,'july');
+
+INSERT INTO markets values('mark500','bangalore','south');
+INSERT INTO markets values('mark501','SURAT','NORTH');
+INSERT INTO markets values('mark502','Dehli','NORTH');
+INSERT INTO markets values('mark503','LATOOR','NORTH');
+INSERT INTO markets values('mark504','CHENNAI','south');
+INSERT INTO markets values('mark505','RANCHI','NORTH');
+INSERT INTO markets values('mark506','MYSORE','south');
+INSERT INTO markets values('mark507','BHUVANESHWAR','NORTH');
+INSERT INTO markets values('mark508','TELANGANA','south');
+INSERT INTO markets values('mark509','GANDHINAGAR','NORTH');
+INSERT INTO markets values('mark510','HUBLI','south');
+INSERT INTO markets values('mark511','JAIPUR','NORTH');
+
+insert into products values('prod284','household');
+insert into products values('prod285','cleaning');
+insert into products values('prod286','clothing');
+insert into products values('prod287','household');
+insert into products values('prod288','cleaning');
+insert into products values('prod289','clothing');
+insert into products values('prod290','household');
+insert into products values('prod291','cleaning');
+insert into products values('prod292','clothing');
+insert into products values('prod293','household');
+insert into products values('prod294','cleaning');
+
+insert into transactions values('prod282','cus101','mark500','2017-06-
+30',1,5000,'usd',null,null,4800);
+insert into transactions values('prod282','cus100','mark502','2016-07-
+28',3,6000,'usd',null,null,5800);
+insert into transactions values('prod283','cus102','mark502','2016-06-
+25',4,10000,'usd',null,null,9800);
+insert into transactions values('prod283','cus103','mark503','2017-11-
+30',5,10000,'usd',null,null,9800);
+insert into transactions values('prod284','cus103','mark504','2018-04-
+20',6,5000,'usd',null,null,4800);
+insert into transactions values('prod284','cus104','mark505','2018-02-
+20',7,5000,'usd',null,null,4800);
+insert into transactions values('prod290','cus105','mark506','2018-01-
+28',2,5000,'usd',null,null,4800);
+insert into transactions values('prod290','cus106','mark507','2018-02-
+15',9,6000,'usd',null,null,5800);
+insert into transactions values('prod291','cus107','mark508','2018-02-
+15',3,5000,'usd',null,null,4800);
+insert into transactions values('prod292','cus107','mark509','2016-07-
+28',1,7000,'usd',null,null,6800);
+insert into transactions values('prod292','cus108','mark510','2016-07-
+28',1,9000,'usd',null,null,8800);
+insert into transactions values('prod293','cus109','mark511','2018-04-
+25',1,8000,'usd',null,null,7800);
+insert into transactions values('prod294','cus101','mark512','2018-04-
+25',1,4000,'usd',null,null,3800);
+insert into transactions values('prod294','cus001','mark513','2018-04-
+25',1,5000,'usd',null,null,4800);
+
+### QUERY 1
+### WRITE AN SQL QUERY TO GET THE TOTAL NUMBER OF CUSTOMERS IN SALES DATABASE
+select count(*) from lab_program1.customers;
+
+### QUERY 2
+### WRITE AN SQL QUERY TO GET THE COMPLETE DETAILS OF TRANSACTIONS FOR MARKET CODE
+'mark502'
+select * from lab_program1.transactions
+where market_code='mark502';
+
+### QUERY 3
+### WRITE AN SQL QUERY TO GET THE TOTAL NUMBER OF TRANSACTIONS FOR MARKET CODE
+'mark502'
+select count(*) from lab_program1.transactions
+where market_code='mark502'
+
+### QUERY 4
+### WRITE AN SQL QUERY TO GET THE DETAILS OF TRANSACTIONS INVOLVING US DOLLER
+CURRENCY
+select * from lab_program1.transactions
+where currency='USD'
+
+### QUERY 5
+### WRITE AN SQL QUERY TO DELETE A COLUMN
+ALTER TABLE date
+drop column month_name;
+
+### QUERY 6
+##WRITE AN SQL QUERY TO GET THE DETAILS OF CUSTOMER_CODE AND MARKET NAME
+SELECT customers.customer_code,markets.markets_name
+from customers,markets,transactions
+where customers.customer_code=transactions.customer_code
+and markets.markets_code=transactions.market_code;
+

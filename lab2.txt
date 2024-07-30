@@ -1,0 +1,91 @@
+create table department2
+(
+dept_id int primary key,
+dept_name varchar(30),
+dept_location varchar(20)
+);
+Create table emp2
+(
+emp_id varchar(20) primary key,
+emp_name varchar(20),
+emp_phone_no varchar(30),
+emp_dept varchar(20),
+job varchar(20),
+hourly_pay double,
+salary double,
+dept_id int,
+FOREIGN KEY (dept_id) REFERENCES department2(dept_id)
+);
+Desc employee2
+select * from employee2
+
+insert into department2 values(1,'sales','Dehli'),
+(2,'claims','mumbai'),
+(3,'developer','Bangalore'),
+(4,'facility','Bangalore');
+
+SET SQL_SAFE_UPDATES = 0;
+
+INSERT INTO emp2 VALUES(011,'JOE',228899887,'SALES','ASSISTANT',100,NULL,1),
+(012,'JASS',228899882,'CLAIMS','MANAGER',400,NULL,2),
+(013,'JOA',228899880,'DEVELOPER','TEAM LEAD',300,NULL,3),
+(014,'JOHN',228899884,'FACILITY','HEL
+PER',60,NULL,4);
+
+QUERY 1-### 40 hours in a work week and 52 weeks in an year
+### 40*52=2080 work hours in an year
+SET SQL_SAFE_UPDATES = 0;
+update emp2
+set salary = hourly_pay*2080;
+
+###QUERY 2-WRITE A TRIGGER TO UPDATE THE SALARY COLUMN AUTOMATICALLY WHEN THE
+HOURLY_PAY IS UPDATED
+
+CREATE TRIGGER HOURLY_PAY_UPDATE
+BEFORE UPDATE ON EMP2
+FOR EACH ROW
+SET NEW.SALARY=(NEW.HOURLY_PAY*2080);
+
+### LETS UPDATE THE HOURLY PAY OF EACH EMPLOYEE BY 50 RS
+UPDATE EMP2
+SET HOURLY_PAY=HOURLY_PAY+50
+SELECT * FROM EMP2
+
+INSERT INTO emp2 VALUES(40,'rama',228899887,'SALES','ASSISTANT',50,NULL,3);
+SELECT * FROM EMP2
+
+###QUERY 3: CREATE TRIGGER TO AUTOMATICALLY CALCULATE THE SALARY OF THE NEW
+EMPLOYEE ADDED TO THE ORGANIZATION
+CREATE TRIGGER BEFORE_HOURLY_PAY_INSERT
+BEFORE INSERT ON EMP2
+FOR EACH ROW
+SET NEW.SALARY=(NEW.hourly_pay*2080)
+
+show triggers
+
+INSERT INTO emp2 VALUES(020,'Jara',228899887,'SALES','ASSISTANT',60,NULL,1);
+SELECT * FROM EMP2
+
+##QUERY 4: WRITE AN SQL QUERY TO GET THE NAMES OF ALL EMPLOYEES WHO'S NAME STARTS
+WITH 'J'
+select emp_name from emp2
+where emp_name like 'j%'
+
+## ##QUERY 5: WRITE AN SQL QUERY TO GET THE NAMES OF ALL EMPLOYEES WHO'S NAME
+CONTAINS LETTER 'a'
+select emp_name from emp2
+where emp_name REGEXP 'a';
+
+####QUERY 5: WRITE AN SQL QUERY TO GET THE NAMES OF ALL EMPLOYEES WHO'S NAME
+whose name contains exactly THREE characters
+select emp_name from emp2
+where emp_name REGEXP '^.{3}$';
+
+### ##QUERY 6: WRITE AN SQL QUERY TO CREATE A VIEW OF EMPLOYEE NAME AND THEIR
+RESPECTIVE LOCATIONS
+CREATE VIEW EMP_LOCATION
+AS
+SELECT EMP_NAME,DEPT_LOCATION
+
+FROM EMP2,DEPARTMENT2
+WHERE DEPARTMENT2.DEPT_ID=EMP2.DEPT_ID;

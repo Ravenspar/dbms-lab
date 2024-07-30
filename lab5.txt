@@ -54,3 +54,30 @@ from pymongo import MongoClient
 client.MongoClient("mongodb://localhost:27000")
 db.client["day_six"]
 collection.db["products"]
+
+collection.insert_many(documents)
+
+documents = [
+{"name": "Laptop", "price": 800, "category": "electronics"},
+{"name": "Mouse", "price": 80, "category": "electronics"}
+]
+
+qi = {'category':{'$nin': ['furniture']}}
+result = collection.find(qi)
+for i in result:
+	print(i)
+
+qi = {'category':{'$in': ['furniture']}}
+result = collection.find(qi)
+for i in result:
+	print(i)
+
+qi = {'category':{'$not': {'eq':800}}}
+result = collection.find(qi)
+for i in result:
+	print(i)	
+
+qi = {'price': {'$gte':100}}}
+result = collection.find(qi)
+for i in result:
+	print(i)
